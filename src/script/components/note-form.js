@@ -1,19 +1,19 @@
-import { notesData } from "../data/local/note.js";
+import NotesApi from '../../data/remote/notes.api.js';
 
 class NoteForm extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
         <form class="note-form">
-        <h2> Tambah Catatan </h2>
-        <label for="note-title">Judul</label>
-        <input type="text" id="note-title" placeholder="Masukkan judul note" required minlength="3" maxlength="50">
-        <span id="note-title-error" class="error-message"></span>
+            <h2> Tambah Catatan </h2>
+            <label for="note-title">Judul</label>
+            <input type="text" id="note-title" placeholder="Masukkan judul note" required minlength="3" maxlength="50">
+            <span id="note-title-error" class="error-message"></span>
 
-        <label for="note-body">Catatan</label>
-        <textarea id="note-body" placeholder="Tulis notemu disini" required minlength="10"></textarea>
-        <span id="note-body-error" class="error-message"></span>
+            <label for="note-body">Catatan</label>
+            <textarea id="note-body" placeholder="Tulis notemu di sini" required minlength="10"></textarea>
+            <span id="note-body-error" class="error-message"></span>
 
-        <button type="submit">Tambah</button>
+            <button type="submit">Tambah</button>
         </form>
         `;
 
@@ -38,7 +38,7 @@ class NoteForm extends HTMLElement {
         titleInput.addEventListener('blur', () => validationField(titleInput, titleError));
         bodyInput.addEventListener('blur', () => validationField(bodyInput, bodyError));
 
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             validationField(titleInput, titleError);
@@ -52,18 +52,23 @@ class NoteForm extends HTMLElement {
             const body = bodyInput.value.trim();
 
             if (title && body) {
-                const newNote = {
-                    id: `notes-${Date.now()}`,
-                    title,
-                    body,
-                    createdAt: new Date().toISOString(),
-                    archived: false,
-                };
-                notesData.push(newNote);
-                document.querySelector('note-list').renderNotes();
-                e.target.reset();
-                titleError.textContent = '';
-                bodyError.textContent = '';
+                try {
+                    await NotesApi.createNote(title, body);
+
+                    alert('Catatan berhasil ditambahkan!');
+
+                    form.reset();
+                    titleError.textContent = '';
+                    bodyError.textContent = '';
+
+                    const noteList = document.querySelector('note-list');
+                    if (noteList) {
+                        noteList.renderNotes();
+                    }
+                } catch (error) {
+                    console.error('Gagal menambahkan catatan:', error);
+                    alert('Gagal menambahkan catatan. Silakan coba lagi.');
+                }
             }
         });
     }

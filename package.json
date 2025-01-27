@@ -25,7 +25,6 @@
         "webpack-dev-server": "^4.15.1",
         "webpack-merge": "^5.10.0"
     },
-    "type": "commonjs",
     "bugs": {
         "url": "https://github.com/izulsyauki/note-app-web-component/issues"
     },
