@@ -5,18 +5,18 @@ class LoadingIndicator extends HTMLElement {
                 <p>Loading...</p>
             </div>
         `;
-        this.style.display = 'none';
-        this.style.textAlign = 'center';
-        this.style.margin = '20px 0';
+        this.style.display = "none";
+        this.style.textAlign = "center";
+        this.style.margin = "20px 0";
     }
 
     show() {
-        this.style.display = 'block';
+        this.style.display = "block";
     }
 
     hide() {
-        this.style.display = 'none';
+        this.style.display = "none";
     }
 }
 
-customElements.define('loading-indicator', LoadingIndicator);
+customElements.define("loading-indicator", LoadingIndicator);

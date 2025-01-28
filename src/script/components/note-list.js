@@ -1,14 +1,15 @@
-import NotesApi from '../../data/remote/notes.api.js';
+import NotesApi from "../../data/remote/notes.api.js";
 
 class NoteList extends HTMLElement {
     connectedCallback() {
-        if (!this.querySelector('loading-indicator')) {
-            const loadingIndicator = document.createElement('loading-indicator');
+        if (!this.querySelector("loading-indicator")) {
+            const loadingIndicator =
+                document.createElement("loading-indicator");
             this.appendChild(loadingIndicator);
         }
-        if (!this.querySelector('.notes-container')) {
-            const notesContainer = document.createElement('div');
-            notesContainer.classList.add('notes-container');
+        if (!this.querySelector(".notes-container")) {
+            const notesContainer = document.createElement("div");
+            notesContainer.classList.add("notes-container");
             this.appendChild(notesContainer);
         }
 
@@ -16,11 +17,11 @@ class NoteList extends HTMLElement {
     }
 
     async renderArchivedNotes() {
-        const loadingIndicator = this.querySelector('loading-indicator');
-        const notesContainer = this.querySelector('.notes-container');
+        const loadingIndicator = this.querySelector("loading-indicator");
+        const notesContainer = this.querySelector(".notes-container");
 
         if (!(loadingIndicator instanceof HTMLElement)) {
-            console.error('loadingIndicator bukan elemen valid!');
+            console.error("loadingIndicator bukan elemen valid!");
             return;
         }
 
@@ -28,33 +29,37 @@ class NoteList extends HTMLElement {
 
         try {
             const notesData = await NotesApi.getArchivedNotes();
-            const sortedNotes = notesData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            const sortedNotes = notesData.sort(
+                (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+            );
 
-            notesContainer.innerHTML = '';
+            notesContainer.innerHTML = "";
 
             if (sortedNotes.length === 0) {
-                notesContainer.innerHTML = '<p class="no-notes">Tidak ada catatan yang diarsipkan.</p>';
+                notesContainer.innerHTML =
+                    '<p class="no-notes">Tidak ada catatan yang diarsipkan.</p>';
             } else {
                 sortedNotes.forEach((note) => {
-                    const noteItem = document.createElement('note-item');
+                    const noteItem = document.createElement("note-item");
                     noteItem.note = note;
                     notesContainer.appendChild(noteItem);
                 });
             }
         } catch (error) {
-            console.error('Gagal memuat catatan yang diarsipkan:', error);
-            notesContainer.innerHTML = '<p>Gagal memuat data. Silakan coba lagi nanti.</p>';
+            console.error("Gagal memuat catatan yang diarsipkan:", error);
+            notesContainer.innerHTML =
+                "<p>Gagal memuat data. Silakan coba lagi nanti.</p>";
         } finally {
             loadingIndicator.hide();
         }
     }
 
     async renderNotes() {
-        const loadingIndicator = this.querySelector('loading-indicator');
-        const notesContainer = this.querySelector('.notes-container');
+        const loadingIndicator = this.querySelector("loading-indicator");
+        const notesContainer = this.querySelector(".notes-container");
 
         if (!(loadingIndicator instanceof HTMLElement)) {
-            console.error('loadingIndicator bukan elemen valid!');
+            console.error("loadingIndicator bukan elemen valid!");
             return;
         }
 
@@ -62,26 +67,30 @@ class NoteList extends HTMLElement {
 
         try {
             const notesData = await NotesApi.getNotes();
-            const sortedNotes = notesData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            const sortedNotes = notesData.sort(
+                (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+            );
 
-            notesContainer.innerHTML = '';
+            notesContainer.innerHTML = "";
 
             if (sortedNotes.length === 0) {
-                notesContainer.innerHTML = '<p class="no-notes">Tidak ada catatan.</p>';
+                notesContainer.innerHTML =
+                    '<p class="no-notes">Tidak ada catatan.</p>';
             } else {
                 sortedNotes.forEach((note) => {
-                    const noteItem = document.createElement('note-item');
+                    const noteItem = document.createElement("note-item");
                     noteItem.note = note;
                     notesContainer.appendChild(noteItem);
                 });
             }
         } catch (error) {
-            console.error('Gagal memuat catatan:', error);
-            notesContainer.innerHTML = '<p>Gagal memuat data. Silakan coba lagi nanti.</p>';
+            console.error("Gagal memuat catatan:", error);
+            notesContainer.innerHTML =
+                "<p>Gagal memuat data. Silakan coba lagi nanti.</p>";
         } finally {
             loadingIndicator.hide();
         }
     }
 }
 
-customElements.define('note-list', NoteList);
+customElements.define("note-list", NoteList);

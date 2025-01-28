@@ -10,20 +10,20 @@ class NavBar extends HTMLElement {
             </nav>
         `;
 
-        const homeLink = this.querySelector('#nav-home');
-        const archivedLink = this.querySelector('#nav-archived');
+        const homeLink = this.querySelector("#nav-home");
+        const archivedLink = this.querySelector("#nav-archived");
 
-        homeLink.addEventListener('click', (e) => {
+        homeLink.addEventListener("click", (e) => {
             e.preventDefault();
-            const noteList = document.querySelector('note-list');
+            const noteList = document.querySelector("note-list");
             if (noteList) {
                 noteList.renderNotes();
             }
         });
 
-        archivedLink.addEventListener('click', (e) => {
+        archivedLink.addEventListener("click", (e) => {
             e.preventDefault();
-            const noteList = document.querySelector('note-list');
+            const noteList = document.querySelector("note-list");
             if (noteList) {
                 noteList.renderArchivedNotes();
             }
@@ -31,4 +31,4 @@ class NavBar extends HTMLElement {
     }
 }
 
-customElements.define('nav-bar', NavBar);
+customElements.define("nav-bar", NavBar);

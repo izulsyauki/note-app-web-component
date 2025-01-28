@@ -1,4 +1,4 @@
-import NotesApi from '../../data/remote/notes.api.js';
+import NotesApi from "../../data/remote/notes.api.js";
 
 class NoteForm extends HTMLElement {
     connectedCallback() {
@@ -17,28 +17,34 @@ class NoteForm extends HTMLElement {
         </form>
         `;
 
-        const form = this.querySelector('form');
-        const titleInput = this.querySelector('#note-title');
-        const bodyInput = this.querySelector('#note-body');
-        const titleError = this.querySelector('#note-title-error');
-        const bodyError = this.querySelector('#note-body-error');
+        const form = this.querySelector("form");
+        const titleInput = this.querySelector("#note-title");
+        const bodyInput = this.querySelector("#note-body");
+        const titleError = this.querySelector("#note-title-error");
+        const bodyError = this.querySelector("#note-body-error");
 
         const validationField = (input, errorElement) => {
-            input.setCustomValidity('');
+            input.setCustomValidity("");
             if (input.validity.valueMissing) {
-                input.setCustomValidity('Wajib diisi.');
+                input.setCustomValidity("Wajib diisi.");
             } else if (input.validity.tooShort) {
                 input.setCustomValidity(`Minimal ${input.minLength} karakter.`);
             } else if (input.validity.tooLong) {
-                input.setCustomValidity(`Maksimal ${input.maxLength} karakter.`);
+                input.setCustomValidity(
+                    `Maksimal ${input.maxLength} karakter.`,
+                );
             }
             errorElement.textContent = input.validationMessage;
         };
 
-        titleInput.addEventListener('blur', () => validationField(titleInput, titleError));
-        bodyInput.addEventListener('blur', () => validationField(bodyInput, bodyError));
+        titleInput.addEventListener("blur", () =>
+            validationField(titleInput, titleError),
+        );
+        bodyInput.addEventListener("blur", () =>
+            validationField(bodyInput, bodyError),
+        );
 
-        form.addEventListener('submit', async (e) => {
+        form.addEventListener("submit", async (e) => {
             e.preventDefault();
 
             validationField(titleInput, titleError);
@@ -52,25 +58,26 @@ class NoteForm extends HTMLElement {
             const body = bodyInput.value.trim();
 
             if (title && body) {
-                const loadingIndicator = document.createElement('loading-indicator');
+                const loadingIndicator =
+                    document.createElement("loading-indicator");
                 this.appendChild(loadingIndicator);
 
                 try {
                     await NotesApi.createNote(title, body);
 
-                    alert('Catatan berhasil ditambahkan!');
+                    alert("Catatan berhasil ditambahkan.");
 
                     form.reset();
-                    titleError.textContent = '';
-                    bodyError.textContent = '';
+                    titleError.textContent = "";
+                    bodyError.textContent = "";
 
-                    const noteList = document.querySelector('note-list');
+                    const noteList = document.querySelector("note-list");
                     if (noteList) {
                         noteList.renderNotes();
                     }
                 } catch (error) {
-                    console.error('Gagal menambahkan catatan:', error);
-                    alert('Gagal menambahkan catatan. Silakan coba lagi.');
+                    console.error("Gagal menambahkan catatan:", error);
+                    alert("Gagal menambahkan catatan. Silakan coba lagi.");
                 } finally {
                     loadingIndicator.remove();
                 }
@@ -79,4 +86,4 @@ class NoteForm extends HTMLElement {
     }
 }
 
-customElements.define('note-form', NoteForm);
+customElements.define("note-form", NoteForm);
