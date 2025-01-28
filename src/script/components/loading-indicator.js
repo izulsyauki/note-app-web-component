@@ -5,7 +5,7 @@ class LoadingIndicator extends HTMLElement {
                 <p>Loading...</p>
             </div>
         `;
-        this.style.display = 'none'; // Secara default disembunyikan
+        this.style.display = 'none';
         this.style.textAlign = 'center';
         this.style.margin = '20px 0';
     }

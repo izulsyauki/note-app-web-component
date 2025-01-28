@@ -52,6 +52,9 @@ class NoteForm extends HTMLElement {
             const body = bodyInput.value.trim();
 
             if (title && body) {
+                const loadingIndicator = document.createElement('loading-indicator');
+                this.appendChild(loadingIndicator);
+
                 try {
                     await NotesApi.createNote(title, body);
 
@@ -68,6 +71,8 @@ class NoteForm extends HTMLElement {
                 } catch (error) {
                     console.error('Gagal menambahkan catatan:', error);
                     alert('Gagal menambahkan catatan. Silakan coba lagi.');
+                } finally {
+                    loadingIndicator.remove();
                 }
             }
         });
