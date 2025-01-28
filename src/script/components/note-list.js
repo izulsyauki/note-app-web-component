@@ -43,6 +43,9 @@ class NoteList extends HTMLElement {
                     const noteItem = document.createElement("note-item");
                     noteItem.note = note;
                     notesContainer.appendChild(noteItem);
+                    setTimeout(() => {
+                        noteItem.classList.add("show");
+                    }, 50);
                 });
             }
         } catch (error) {
@@ -51,6 +54,7 @@ class NoteList extends HTMLElement {
                 "<p>Gagal memuat data. Silakan coba lagi nanti.</p>";
         } finally {
             loadingIndicator.hide();
+            notesContainer.classList.add("loaded");
         }
     }
 
@@ -81,6 +85,10 @@ class NoteList extends HTMLElement {
                     const noteItem = document.createElement("note-item");
                     noteItem.note = note;
                     notesContainer.appendChild(noteItem);
+                    // Setelah menambahkan note-item, tambahkan kelas show untuk animasi
+                    setTimeout(() => {
+                        noteItem.classList.add("show");
+                    }, 50); // Menambahkan sedikit delay agar animasi lebih halus
                 });
             }
         } catch (error) {
@@ -89,6 +97,8 @@ class NoteList extends HTMLElement {
                 "<p>Gagal memuat data. Silakan coba lagi nanti.</p>";
         } finally {
             loadingIndicator.hide();
+            // Menambahkan kelas loaded pada container agar transisi opacity terjadi
+            notesContainer.classList.add("loaded");
         }
     }
 }
